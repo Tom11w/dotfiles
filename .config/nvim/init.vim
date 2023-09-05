@@ -1,5 +1,5 @@
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
-source ~/.vimrc1
+source ~/.vimrc
 let g:python3_host_prog = '/Users/tom11w/Envs/vimpy3env/bin/python'
 let g:python_host_prog = '/Users/tom11w/Envs/vimpy2env/bin/python'
 let &packpath = &runtimepath
