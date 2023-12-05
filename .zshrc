@@ -112,19 +112,20 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 #
-HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-if [ -f "$HB_CNF_HANDLER" ]; then
-source "$HB_CNF_HANDLER";
+if [ "$(uname -s)" = "Darwin" ]; then
+    HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+    if [ -f "$HB_CNF_HANDLER" ]; then
+    source "$HB_CNF_HANDLER";
+    fi
+    source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+
+    export WORKON_HOME=~/Envs
+
+    export VIRTUALENVWRAPPER_PYTHON=$(which python3)
+    source /usr/local/bin/virtualenvwrapper.sh
+elif [ "$(expr substr $(uname -s) 1 5)" = "Linux" ]; then
+    source /home/tom11w/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
 fi
-
-
-source /home/tom11w/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
-source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
-
-export WORKON_HOME=~/Envs
-
-export VIRTUALENVWRAPPER_PYTHON=$(which python3)
-source /usr/local/bin/virtualenvwrapper.sh
 
 alias weather="curl wttr.in"
 alias ftxt='grep --recursive --line-number -i'
@@ -132,8 +133,14 @@ alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+if [ "$(uname -s)" = "Darwin" ]; then
+    source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [ "$(expr substr $(uname -s) 1 5)" = "Linux" ]; then
+    source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
 
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
