@@ -94,7 +94,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vim'
+   export EDITOR='nvim'
  else
    export EDITOR='nvim'
  fi
@@ -118,6 +118,7 @@ source "$HB_CNF_HANDLER";
 fi
 
 
+source /home/tom11w/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
 source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
 
 export WORKON_HOME=~/Envs
@@ -127,8 +128,7 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 alias weather="curl wttr.in"
 alias ftxt='grep --recursive --line-number -i'
-alias config='/usr/bin/git --git-dir=/Users/tom11w/dotfiles --work-tree=/Users/tom11w'
-
+alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
