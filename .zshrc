@@ -99,6 +99,8 @@ source $ZSH/oh-my-zsh.sh
    export EDITOR='nvim'
  fi
 
+alias vi="nvim"
+alias vimdiff='nvim -d'
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
