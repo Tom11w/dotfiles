@@ -119,7 +119,9 @@ if [ "$(uname -s)" = "Darwin" ]; then
     if [ -f "$HB_CNF_HANDLER" ]; then
     source "$HB_CNF_HANDLER";
     fi
-    source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
+    source /usr/local/opt/powerlevel10k/share/powerlevel10k/powerlevel10k.zsh-theme
+
+
 
     export WORKON_HOME=~/Envs
 
@@ -131,6 +133,7 @@ fi
 
 alias weather="curl wttr.in"
 alias ftxt='grep --recursive --line-number -i'
+alias fman="compgen -c | fzf | xargs man"
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
