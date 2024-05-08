@@ -23,10 +23,24 @@ Plug 'frazrepo/vim-rainbow'
 Plug 'rust-lang/rust.vim'
 Plug 'alexghergh/nvim-tmux-navigation'
 Plug 'sophacles/vim-processing'
-
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'mfussenegger/nvim-dap-python'
+Plug 'tpope/vim-obsession'
 call plug#end()
 
 lua require('nvim-tmux-navigation')
+
+
+"lua require('dap-python').setup('~/Envs/vimpy3env/bin/python')
+"lua require('dapui').setup()
+
+
+:nmap <space>dt :lua require('dap').continue()<CR>
+:nmap <space>db :lua require('dap').toggle_breakpoint()<CR>
+:nmap <space>dc :lua require('dap').continue()<CR>
+:nmap <space>dr :lua require('dapui').open({reset = true})<CR>
+
 
 :nmap <space>e :CocCommand explorer --quit-on-open <CR>
 
@@ -68,6 +82,7 @@ endfunction
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%{ObsessionStatus()}
 set statusline+=%*
 
 "let g:syntastic_always_populate_loc_list = 1
@@ -87,7 +102,7 @@ let g:coc_global_extensions = [
   \ 'coc-pairs',
   \ 'coc-tsserver',
   \ 'coc-eslint',
-  \ 'coc-prettier', 
+  \ 'coc-prettier',
   \ 'coc-json',
   \ 'coc-pyright',
   \ ]
