@@ -4,7 +4,7 @@ let g:python3_host_prog = '/Users/tom11w/Envs/vimpy3env/bin/python'
 let g:python_host_prog = '/Users/tom11w/Envs/vimpy2env/bin/python'
 let &packpath = &runtimepath
 call plug#begin()
-Plug 'dense-analysis/ale'
+"Plug 'dense-analysis/ale'
 Plug 'sheerun/vim-polyglot'
 Plug 'Yggdroot/indentLine'
 Plug 'norcalli/nvim-colorizer.lua'
@@ -27,6 +27,8 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'mfussenegger/nvim-dap-python'
 Plug 'tpope/vim-obsession'
+Plug 'nvim-neotest/nvim-nio'
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 call plug#end()
 
 lua require('nvim-tmux-navigation')
@@ -36,10 +38,10 @@ lua require('nvim-tmux-navigation')
 "lua require('dapui').setup()
 
 
-:nmap <space>dt :lua require('dap').continue()<CR>
-:nmap <space>db :lua require('dap').toggle_breakpoint()<CR>
-:nmap <space>dc :lua require('dap').continue()<CR>
-:nmap <space>dr :lua require('dapui').open({reset = true})<CR>
+":nmap <space>dt :lua require('dap').continue()<CR>
+":nmap <space>db :lua require('dap').toggle_breakpoint()<CR>
+":nmap <space>dc :lua require('dap').continue()<CR>
+":nmap <space>dr :lua require('dapui').open({reset = true})<CR>
 
 
 :nmap <space>e :CocCommand explorer --quit-on-open <CR>
@@ -54,7 +56,7 @@ set expandtab
 
 let g:codedark_italics=1
 
-let g:airline_theme = 'codedark'
+let g:airline_theme = 'catppuccin'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#battery#enabled = 1
 set spelllang=en
@@ -71,14 +73,14 @@ let g:syntastic_cpp_checkers = ['cpplint']
 let g:syntastic_c_checkers = ['cpplint']
 let g:syntastic_cpp_cpplint_exec = 'cpplint'
 
-function! Tab_Or_Complete()
-  if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
-    return "\<C-N>"
-  else
-    return "\<Tab>"
-  endif
-endfunction
-:inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
+"function! Tab_Or_Complete()
+"  if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
+"    return "\<C-N>"
+"  else
+"    return "\<Tab>"
+"  endif
+"endfunction
+":inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -90,11 +92,11 @@ set statusline+=%*
 "let g:syntastic_check_on_open = 1
 "let g:syntastic_check_on_wq = 0
 
-
-
 set termguicolors
+lua require('colortest')
+"colorscheme catppuccin-mocha
 
-lua require'colorizer'.setup()
+
 
 " coc config -------
 let g:coc_global_extensions = [
@@ -108,6 +110,8 @@ let g:coc_global_extensions = [
   \ ]
 " from readme
 " if hidden is not set, TextEdit might fail.
+
+
 set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
 
@@ -138,7 +142,8 @@ set listchars=eol:⏎,tab:\|\-▶,trail:~,extends:>,precedes:<,nbsp:␣
 "cnoremap <F5> <C-c>:set list! relativenumber! nu!<CR>
 noremap <F5> :set list! relativenumber! nu!<CR>:IndentLinesToggle<CR>
 
-colorscheme codedark
+"colorscheme codedark
+
 "set notermguicolors
 
 
