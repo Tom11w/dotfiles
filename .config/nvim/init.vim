@@ -11,23 +11,23 @@ Plug 'norcalli/nvim-colorizer.lua'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'lambdalisue/battery.vim'
 Plug 'vim-airline/vim-airline'
-Plug 'tomasiser/vim-code-dark'
+"Plug 'tomasiser/vim-code-dark'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 Plug 'francoiscabrol/ranger.vim'
 Plug 'rbgrouleff/bclose.vim'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'martinsione/darkplus.nvim'
+"Plug 'martinsione/darkplus.nvim'
 "Plug 'vim-syntastic/syntastic'
 Plug 'frazrepo/vim-rainbow'
 Plug 'rust-lang/rust.vim'
 Plug 'alexghergh/nvim-tmux-navigation'
-Plug 'sophacles/vim-processing'
-Plug 'mfussenegger/nvim-dap'
-Plug 'rcarriga/nvim-dap-ui'
-Plug 'mfussenegger/nvim-dap-python'
+"Plug 'sophacles/vim-processing'
+"Plug 'mfussenegger/nvim-dap'
+"Plug 'rcarriga/nvim-dap-ui'
+"Plug 'mfussenegger/nvim-dap-python'
 Plug 'tpope/vim-obsession'
-Plug 'nvim-neotest/nvim-nio'
+"Plug 'nvim-neotest/nvim-nio'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 call plug#end()
 
