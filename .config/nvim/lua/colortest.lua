@@ -1,8 +1,5 @@
 require("catppuccin").setup({
     term_colors = true,
-    integrations = {
-        coc_nvim = true,
-    },
 
     native_lsp = {
         enabled = true,
@@ -25,5 +22,13 @@ require("catppuccin").setup({
         },
     },
 })
-require('colorizer').setup()
+
+require('colorizer').setup{
+    filetypes = { "*" },
+    user_default_options = {
+      tailwind = true, -- Enable tailwind colors
+      css = true,
+      always_update = true,
+    }
+  }
 vim.cmd.colorscheme "catppuccin"

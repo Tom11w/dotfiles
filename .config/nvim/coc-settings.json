@@ -11,6 +11,7 @@
   ],
   "python.pythonPath": "/Users/tom11w/.config/coc/pycmd",
   "python.venvPath": "/Users/tom11w/Envs/env1",
-  "python.linting.mypyEnabled": true
+  "python.linting.mypyEnabled": true,
+  "inlayHint.enable": false
 
 }

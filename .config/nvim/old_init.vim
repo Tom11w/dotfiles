@@ -27,6 +27,9 @@ Plug 'alexghergh/nvim-tmux-navigation'
 "Plug 'rcarriga/nvim-dap-ui'
 "Plug 'mfussenegger/nvim-dap-python'
 Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
+Plug 'kristijanhusak/vim-dadbod-completion'
 "Plug 'nvim-neotest/nvim-nio'
 Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 call plug#end()
@@ -49,7 +52,7 @@ lua require('nvim-tmux-navigation')
 :nmap <space>r :CocCommand document.renameCurrentWord <CR>
 
 set tabstop=4
-set shiftwidth=4
+set shiftwidth=2
 set expandtab
 "colorscheme codedark
 "colorscheme darkplus
@@ -101,7 +104,6 @@ lua require('colortest')
 " coc config -------
 let g:coc_global_extensions = [
   \ 'coc-snippets',
-  \ 'coc-pairs',
   \ 'coc-tsserver',
   \ 'coc-eslint',
   \ 'coc-prettier',
@@ -126,10 +128,13 @@ let g:ale_linters = {'python': ['flake8', 'pylint'], 'javascript': ['eslint']}
 
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
+" remove this latter maybe
+"
 
-
-
-
+"setlocal isfname+=@-@
+"setlocal includeexpr=substitute(v:fname,'^@\/','/Users/tom11w/Projects/Uni/9785-S2-39/scrumtoolkit/','')
+"setlocal includeexpr=substitute(v:fname,'^@\/','scrumtoolkit/','')
+"set suffixesadd=.js,.tsx,.css,.ts
 
 set listchars=eol:⏎,tab:\|\-▶,trail:~,extends:>,precedes:<,nbsp:␣
 
