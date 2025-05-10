@@ -121,8 +121,6 @@ if [ "$(uname -s)" = "Darwin" ]; then
     fi
     source /usr/local/opt/powerlevel10k/share/powerlevel10k/powerlevel10k.zsh-theme
 
-
-
     export WORKON_HOME=~/Envs
 
     export VIRTUALENVWRAPPER_PYTHON=$(which python3)
@@ -147,13 +145,24 @@ elif [ "$(expr substr $(uname -s) 1 5)" = "Linux" ]; then
     source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
-
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
 
-
-
-
+# pnpm
+export PNPM_HOME="/Users/tom11w/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+#
+#
+#
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
-#export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/tom11w/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/tom11w/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/tom11w/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/tom11w/google-cloud-sdk/completion.zsh.inc'; fi
