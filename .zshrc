@@ -126,10 +126,10 @@ if [ "$(uname -s)" = "Darwin" ]; then
     export VIRTUALENVWRAPPER_PYTHON=$(which python3)
     source /usr/local/bin/virtualenvwrapper.sh
 elif [ "$(expr substr $(uname -s) 1 5)" = "Linux" ]; then
-    source /home/tom11w/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
+    source $HOME/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
 fi
 
-alias weather="curl wttr.in"
+alias weather="curl wttr.in/canberra"
 alias ftxt='grep --recursive --line-number -i'
 alias fman="compgen -c | fzf | xargs man"
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
@@ -141,28 +141,38 @@ if [ "$(uname -s)" = "Darwin" ]; then
     source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
     source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 elif [ "$(expr substr $(uname -s) 1 5)" = "Linux" ]; then
-    source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    if [[ -d "${/usr/share/}" && ! -L "${/usr/share/}" ]] ; then
+        source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+        source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    else
+        source /data/data/com.termux/files/home/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+        source /data/data/com.termux/files/home/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    fi
 fi
 
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+if [ "$(uname -s)" = "Darwin" ]; then
+    export PATH="$HOME/.jenv/bin:$PATH"
+    eval "$(jenv init -)"
+
 
 # pnpm
-export PNPM_HOME="/Users/tom11w/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-#
-#
-#
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+    export PNPM_HOME="/Users/tom11w/Library/pnpm"
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/tom11w/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/tom11w/google-cloud-sdk/path.zsh.inc'; fi
 
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/tom11w/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/tom11w/google-cloud-sdk/completion.zsh.inc'; fi
+    case ":$PATH:" in
+      *":$PNPM_HOME:"*) ;;
+      *) export PATH="$PNPM_HOME:$PATH" ;;
+    esac
+    # pnpm end
+
+
+
+    # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+    export PATH="$PATH:$HOME/.rvm/bin"
+
+    # The next line updates PATH for the Google Cloud SDK.
+    if [ -f '/Users/tom11w/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/tom11w/google-cloud-sdk/path.zsh.inc'; fi
+
+    # The next line enables shell command completion for gcloud.
+    if [ -f '/Users/tom11w/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/tom11w/google-cloud-sdk/completion.zsh.inc'; fi
+fi
