@@ -1,17 +1,18 @@
 return {
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
+    "mason-org/mason.nvim",
+    "mason-org/mason-lspconfig.nvim",
     opts = {
         ensure_installed = {
-            "ts_ls",
-            "tailwindcss",
+            "ast_grep",
+            "bashls",
+            "clangd",
             "eslint",
             "lua_ls",
-            "ast_grep",
-            "clangd",
             "python-lsp-server",
             "ruff",
-            "bashls",
+            "rust-analyzer",
+            "tailwindcss",
+            "ts_ls",
         }
     }
 }

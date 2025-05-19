@@ -8,35 +8,33 @@ vim.g.mapleader = ' '
 
 require("config.lazy")
 
-require("config.lspconfig")
-require("config.nvim-cmp")
 require('nvim-tmux-navigation')
 
 
 -- General settings
 vim.opt.tabstop = 4
-vim.opt.shiftwidth = 2
+vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.termguicolors = true
 vim.opt.spelllang = "en"
 
 -- Line numbering
-vim.opt.number = true            -- Equivalent to `set nu`
-vim.opt.relativenumber = true     -- Equivalent to `set relativenumber`
+vim.opt.number = true         -- Equivalent to `set nu`
+vim.opt.relativenumber = true -- Equivalent to `set relativenumber`
 
 -- Highlight the 80th column
-vim.opt.colorcolumn = "80"        -- Equivalent to `set colorcolumn=80`
+vim.opt.colorcolumn = "80" -- Equivalent to `set colorcolumn=80`
 
 -- Highlight the current line
-vim.opt.cursorline = true         -- Equivalent to `set cul`
+vim.opt.cursorline = true -- Equivalent to `set cul`
 
 
-vim.opt.scrolloff = 5
+vim.opt.scrolloff  = 5
 
 -- always show signcolumns
 vim.opt.signcolumn = 'yes'
 
-vim.opt.hidden  = true
+vim.opt.hidden     = true
 -- " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
 
 
@@ -50,9 +48,6 @@ vim.opt.isfname:append("@-@")
 vim.g.airline_theme = 'catppuccin'
 vim.g.airline_powerline_fonts = 1
 
-vim.g.rainbow_active = true
-vim.cmd('RainbowLoad')
-
 
 require('colortest')
 
@@ -60,10 +55,13 @@ require('colortest')
 vim.g.python3_host_prog = '/Users/tom11w/Envs/vimpy3env/bin/python'
 vim.g.python_host_prog = '/Users/tom11w/Envs/vimpy2env/bin/python'
 
+vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
+vim.keymap.set("n", "<space>x", ":.lua<CR>")
+vim.keymap.set("v", "<space>x", ":lua<CR>")
 
 -- require('dapui').setup()
 -- require('dap-python').setup('~/Envs/vimpy3env/bin/python')
--- 
+--
 -- vim.api.nvim_set_keymap("n", "<space>dt", ":lua require'dapui'.toggle()<CR>", {noremap=true})
 -- vim.api.nvim_set_keymap("n", "<space>db", ":lua require'dap'.toggle_breakpoint()<CR>", {noremap=true})
 -- vim.api.nvim_set_keymap("n", "<space>dc", ":lua require'dap'.continue()<CR>", {noremap=true})
@@ -87,23 +85,23 @@ map('n', '<C-Space>', '<Cmd>NvimTmuxNavigateNext<CR>', { noremap = true, silent 
 
 
 require("ibl").setup {
-  indent = {
-    char = {
-      "|", "¦", "┆", "┊"
+    indent = {
+        char = {
+            "|", "¦", "┆", "┊"
+        },
     },
-  },
-  scope = { enabled = false },
+    scope = { enabled = false },
 }
 
 -- Show special characters
 vim.opt.list = true
 vim.opt.listchars = {
-  eol = "⏎",
-  tab = "|-▶",
-  trail = "~",
-  extends = ">",
-  precedes = "<",
-  nbsp = "␣"
+    eol = "⏎",
+    tab = "|-▶",
+    trail = "~",
+    extends = ">",
+    precedes = "<",
+    nbsp = "␣"
 }
 
 --  space = "·",
