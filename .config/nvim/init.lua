@@ -52,8 +52,8 @@ vim.g.airline_powerline_fonts = 1
 require('colortest')
 
 -- Set Python paths
-vim.g.python3_host_prog = '/Users/tom11w/Envs/vimpy3env/bin/python'
-vim.g.python_host_prog = '/Users/tom11w/Envs/vimpy2env/bin/python'
+vim.g.python3_host_prog = '~/Envs/vimpy3env/bin/python'
+-- vim.g.python_host_prog = '/Users/tom11w/Envs/vimpy2env/bin/python'
 
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
 vim.keymap.set("n", "<space>x", ":.lua<CR>")
