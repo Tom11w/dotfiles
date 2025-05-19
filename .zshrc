@@ -141,7 +141,7 @@ if [ "$(uname -s)" = "Darwin" ]; then
     source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
     source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 elif [ "$(expr substr $(uname -s) 1 5)" = "Linux" ]; then
-    if [[ -d "${/usr/share/}" && ! -L "${/usr/share/}" ]] ; then
+    if [[ -d "/usr/share/" && ! -L "/usr/share/" ]] ; then
         source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
         source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     else
