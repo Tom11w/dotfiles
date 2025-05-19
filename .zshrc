@@ -176,3 +176,5 @@ if [ "$(uname -s)" = "Darwin" ]; then
     # The next line enables shell command completion for gcloud.
     if [ -f '/Users/tom11w/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/tom11w/google-cloud-sdk/completion.zsh.inc'; fi
 fi
+
+export GITLAB_HOME=/srv/gitlab
