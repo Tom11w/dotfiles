@@ -13,6 +13,7 @@ return {
             "rust-analyzer",
             "tailwindcss",
             "ts_ls",
+            "markdownlint",
         }
     }
 }

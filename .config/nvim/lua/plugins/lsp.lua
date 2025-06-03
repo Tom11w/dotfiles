@@ -62,6 +62,7 @@ return {
                 "prettierd",
                 "python-lsp-server",
                 "rust-analyzer",
+                "markdownlint",
             }
         })
         require("mason-lspconfig").setup()
