@@ -6,4 +6,5 @@ return {
         vim.g.mkdp_filetypes = { "markdown" }
     end,
     ft = { "markdown" },
+    vim.api.nvim_set_keymap("n", " p", "<cmd>MarkdownPreviewToggle<CR>", { noremap = true, silent = true })
 }
