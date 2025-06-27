@@ -81,11 +81,15 @@ export ZSH=$HOME"/.oh-my-zsh"
 plugins=(
     git
     macos
+    fzf
 )
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+# export FZF_DEFAULT_COMMAND=''
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git --exclude .cache'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
