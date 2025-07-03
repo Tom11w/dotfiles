@@ -17,8 +17,15 @@ return {
         },
     },
     config = function()
-        local capabilities = require('blink.cmp').get_lsp_capabilities()
+        local capabilities = {
+            general = {
+                -- positionEncodings = { "utf-8", "utf-16", "utf-32" }  <--- this is the default
+                positionEncodings = { "utf-16" }
+            },
+        }
+        capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
         require("lspconfig").lua_ls.setup { capabilities = capabilities }
+        require("lspconfig").ruff.setup { capabilities = capabilities }
 
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('my.lsp', {}),
@@ -51,20 +58,7 @@ return {
                 end
             end,
         })
-        require("mason").setup({
-            ensure_installed = {
-                "ts_ls",
-                "tailwindcss",
-                "eslint-lsp",
-                "lua-language-server",
-                "javascript",
-                "tsx",
-                "prettierd",
-                "python-lsp-server",
-                "rust-analyzer",
-                "markdownlint",
-            }
-        })
-        require("mason-lspconfig").setup()
+        require("mason").setup()
+        -- require("mason-lspconfig").setup()
     end,
 }

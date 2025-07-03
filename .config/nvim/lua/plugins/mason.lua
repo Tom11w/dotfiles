@@ -1,19 +1,22 @@
 return {
-    "mason-org/mason.nvim",
     "mason-org/mason-lspconfig.nvim",
     opts = {
         ensure_installed = {
             "ast_grep",
+            "basedpyright",
             "bashls",
             "clangd",
             "eslint",
             "lua_ls",
-            "python-lsp-server",
+            "marksman",
             "ruff",
-            "rust-analyzer",
+            "rust_analyzer",
             "tailwindcss",
             "ts_ls",
-            "markdownlint",
-        }
-    }
+        },
+    },
+    dependencies = {
+        { "mason-org/mason.nvim", opts = {} },
+        "neovim/nvim-lspconfig",
+    },
 }
