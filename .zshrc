@@ -127,7 +127,8 @@ if [ "$(uname -s)" = "Darwin" ]; then
     # if [ -f "$HB_CNF_HANDLER" ]; then
     # source "$HB_CNF_HANDLER";
     # fi
-    source /usr/local/opt/powerlevel10k/share/powerlevel10k/powerlevel10k.zsh-theme
+    # source /usr/local/opt/powerlevel10k/share/powerlevel10k/powerlevel10k.zsh-theme
+    source $ZSH/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
 
     export WORKON_HOME=~/Envs
 
@@ -146,7 +147,7 @@ alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 if [ "$(uname -s)" = "Darwin" ]; then
-    source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
     source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 elif [ "$(expr substr $(uname -s) 1 5)" = "Linux" ]; then
     if [[ -d "/usr/share/" && ! -L "/usr/share/" ]] ; then
