@@ -2,16 +2,17 @@ return {
   "mason-org/mason-lspconfig.nvim",
   opts = {
     ensure_installed = {
-      "ast_grep",
-      "bashls",
+      "ast-grep",
+      "bash-language-server",
       "clangd",
-      "eslint",
+      "eslint-lsp",
+      "eslint_d",
       "lua_ls",
       "marksman",
       "ruff",
       "rust_analyzer",
-      "tailwindcss",
-      "ts_ls",
+      "tailwindcss-language-server",
+      "typescript-language-server",
     },
   },
   dependencies = {
