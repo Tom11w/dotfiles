@@ -119,10 +119,14 @@ alias vimdiff='nvim -d'
 #
 #
 if [ "$(uname -s)" = "Darwin" ]; then
-    HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-    if [ -f "$HB_CNF_HANDLER" ]; then
-    source "$HB_CNF_HANDLER";
+    HOMEBREW_COMMAND_NOT_FOUND_HANDLER="$(brew --repository)/Library/Homebrew/command-not-found/handler.sh"
+    if [ -f "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER" ]; then
+        source "$HOMEBREW_COMMAND_NOT_FOUND_HANDLER";
     fi
+    # HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+    # if [ -f "$HB_CNF_HANDLER" ]; then
+    # source "$HB_CNF_HANDLER";
+    # fi
     source /usr/local/opt/powerlevel10k/share/powerlevel10k/powerlevel10k.zsh-theme
 
     export WORKON_HOME=~/Envs
@@ -180,5 +184,5 @@ if [ "$(uname -s)" = "Darwin" ]; then
     # The next line enables shell command completion for gcloud.
     if [ -f '/Users/tom11w/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/tom11w/google-cloud-sdk/completion.zsh.inc'; fi
 fi
-
+export PATH="$PATH:$HOME/.docker/bin"
 export GITLAB_HOME=/srv/gitlab
