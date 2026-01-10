@@ -78,10 +78,22 @@ export ZSH=$HOME"/.oh-my-zsh"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+#
+#
+PYTHON_VENV_NAME=".venv"
+PYTHON_VENV_NAMES=($PYTHON_VENV_NAME venv)
+PYTHON_AUTO_VRUN=true
+
+
+zstyle ':omz:plugins:alias-finder' autoload yes # disabled by default
+zstyle ':omz:plugins:alias-finder' exact yes # disabled by default
+
 plugins=(
+    alias-finder
+    fzf
     git
     macos
-    fzf
+    python
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -133,7 +145,8 @@ if [ "$(uname -s)" = "Darwin" ]; then
     export WORKON_HOME=~/Envs
 
     export VIRTUALENVWRAPPER_PYTHON=$(which python3)
-    source /usr/local/bin/virtualenvwrapper.sh
+    # source /usr/local/bin/virtualenvwrapper.sh
+    source /Library/Frameworks/Python.framework/Versions/3.14/bin/virtualenvwrapper.sh
 elif [ "$(expr substr $(uname -s) 1 5)" = "Linux" ]; then
     source $HOME/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
 fi
@@ -187,3 +200,8 @@ if [ "$(uname -s)" = "Darwin" ]; then
 fi
 export PATH="$PATH:$HOME/.docker/bin"
 export GITLAB_HOME=/srv/gitlab
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/tom11w/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
