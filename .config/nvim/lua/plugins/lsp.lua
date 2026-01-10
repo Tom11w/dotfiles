@@ -25,8 +25,19 @@ return {
     }
     capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
     vim.lsp.enable('lua_ls')
-    -- require("lspconfig").lua_ls.setup { capabilities = capabilities }
-    -- require("lspconfig").ruff.setup { capabilities = capabilities }
+    vim.lsp.config('*', {
+      capabilities = capabilities })
+    vim.lsp.enable('ruff')
+    vim.lsp.enable('ty')
+    vim.diagnostic.config({
+      float = {
+        source = true,
+        border = "rounded",
+      },
+    })
+    vim.lsp.buf.hover(
+      { border = "rounded" }
+    )
 
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('my.lsp', {}),
