@@ -170,6 +170,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" = "Linux" ]; then
         source /data/data/com.termux/files/home/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
         source /data/data/com.termux/files/home/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     fi
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
 if [ "$(uname -s)" = "Darwin" ]; then
