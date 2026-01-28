@@ -49,7 +49,7 @@ vim.g.airline_theme = 'catppuccin'
 vim.g.airline_powerline_fonts = 1
 
 
-require('colortest')
+require('color')
 
 -- Set Python paths
 vim.g.python3_host_prog = '~/Envs/vimpy3env/bin/python'
@@ -85,23 +85,23 @@ map('n', '<C-Space>', '<Cmd>NvimTmuxNavigateNext<CR>', { noremap = true, silent 
 
 
 require("ibl").setup {
-    indent = {
-        char = {
-            "|", "¦", "┆", "┊"
-        },
+  indent = {
+    char = {
+      "|", "¦", "┆", "┊"
     },
-    scope = { enabled = false },
+  },
+  scope = { enabled = false },
 }
 
 -- Show special characters
 vim.opt.list = true
 vim.opt.listchars = {
-    eol = "⏎",
-    tab = "|-▶",
-    trail = "~",
-    extends = ">",
-    precedes = "<",
-    nbsp = "␣"
+  eol = "⏎",
+  tab = "|-▶",
+  trail = "~",
+  extends = ">",
+  precedes = "<",
+  nbsp = "␣"
 }
 
 --  space = "·",

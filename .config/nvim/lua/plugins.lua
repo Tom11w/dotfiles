@@ -1,11 +1,7 @@
 return {
-  -- { "mfussenegger/nvim-dap" },
-  -- { "mfussenegger/nvim-dap-python" },
-  -- { "nvim-neotest/nvim-nio" },
-  -- { "sheerun/vim-polyglot" },
-  -- { "theHamsta/nvim-dap-virtual-text" },
   { "HiPhish/rainbow-delimiters.nvim",     submodules = false, },
   { "alexghergh/nvim-tmux-navigation" },
+  { "catgoose/nvim-colorizer.lua" },
   { "catppuccin/nvim",                     name = "catppuccin", priority = 1000 },
   { "echasnovski/mini.nvim",               version = false },
   { "kristijanhusak/vim-dadbod-completion" },
@@ -19,5 +15,10 @@ return {
   { "vim-airline/vim-airline" },
   { "vim-airline/vim-airline-themes" },
   { "vuciv/golf" },
+  -- { "mfussenegger/nvim-dap" },
+  -- { "mfussenegger/nvim-dap-python" },
+  -- { "nvim-neotest/nvim-nio" },
+  -- { "sheerun/vim-polyglot" },
+  -- { "theHamsta/nvim-dap-virtual-text" },
   -- { "wookayin/semshi",                     build = ":UpdateRemotePlugins" },
 }
