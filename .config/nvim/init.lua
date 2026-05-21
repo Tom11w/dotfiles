@@ -43,10 +43,9 @@ vim.opt.updatetime = 50
 vim.opt.isfname:append("@-@")
 
 
-
----- Airline settings
-vim.g.airline_theme = 'catppuccin'
-vim.g.airline_powerline_fonts = 1
+-- ---- Status line settings
+require('mini.statusline').setup()
+require('mini.icons').setup()
 
 
 require('color')
@@ -58,6 +57,7 @@ vim.g.python3_host_prog = '~/Envs/vimpy3env/bin/python'
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
 vim.keymap.set("n", "<space>x", ":.lua<CR>")
 vim.keymap.set("v", "<space>x", ":lua<CR>")
+vim.keymap.set("n", "<leader>rr", ":!cargo run <CR>", { desc = "Cargo run" })
 
 -- require('dapui').setup()
 -- require('dap-python').setup('~/Envs/vimpy3env/bin/python')

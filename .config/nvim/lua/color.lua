@@ -21,6 +21,7 @@ require("catppuccin").setup({
       background = true,
     },
   },
+  auto_integrations = true,
 })
 
 require('colorizer').setup({
@@ -31,4 +32,4 @@ require('colorizer').setup({
     xterm = true, -- Enable xterm 256-color codes (#xNN, \e[38;5;NNNm)
   }
 })
-vim.cmd.colorscheme "catppuccin"
+vim.cmd.colorscheme "catppuccin-nvim"
