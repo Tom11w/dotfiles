@@ -2,14 +2,40 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
-
 local map = vim.api.nvim_set_keymap
 vim.g.mapleader = ' '
 
-require("config.lazy")
+vim.pack.add({
+  "https://github.com/nvim-mini/mini.nvim",
+  "https://github.com/HiPhish/rainbow-delimiters.nvim",
+  "https://github.com/alexghergh/nvim-tmux-navigation",
+  "https://github.com/catgoose/nvim-colorizer.lua",
+  { src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
+  "https://github.com/kristijanhusak/vim-dadbod-completion",
+  "https://github.com/kristijanhusak/vim-dadbod-ui",
+  "https://github.com/lewis6991/gitsigns.nvim",
+  "https://github.com/nvim-lua/plenary.nvim",
+  "https://github.com/rbgrouleff/bclose.vim",
+  "https://github.com/rust-lang/rust.vim",
+  "https://github.com/tpope/vim-dadbod",
+  "https://github.com/tpope/vim-obsession",
+  "https://github.com/lukas-reineke/indent-blankline.nvim",
+})
+
+-- ---- Status line settings
+require('mini.statusline').setup()
+require('mini.icons').setup()
 
 require('nvim-tmux-navigation')
+require('rainbow-delimiters.setup').setup()
 
+-- wk = require("which-key")
+-- wk.add({
+--   { "<leader>?", function() require("which-key").show({ global = false }) end, desc = "Buffer Local Keymaps (which-key)", },
+-- })
+--
+
+-- require("config.lazy")
 
 -- General settings
 vim.opt.tabstop = 4
@@ -43,11 +69,7 @@ vim.opt.updatetime = 50
 vim.opt.isfname:append("@-@")
 
 
--- ---- Status line settings
-require('mini.statusline').setup()
-require('mini.icons').setup()
-
-
+--- status line was here
 require('color')
 
 -- Set Python paths
@@ -85,14 +107,6 @@ map('n', '<C-w>\\', '<Cmd>NvimTmuxNavigateLastActive<CR>', { noremap = true, sil
 map('n', '<C-Space>', '<Cmd>NvimTmuxNavigateNext<CR>', { noremap = true, silent = true })
 
 
-require("ibl").setup {
-  indent = {
-    char = {
-      "|", "¦", "┆", "┊"
-    },
-  },
-  scope = { enabled = false },
-}
 
 -- Show special characters
 vim.opt.list = true
@@ -104,5 +118,13 @@ vim.opt.listchars = {
   precedes = "<",
   nbsp = "␣"
 }
-
 --  space = "·",
+
+require("ibl").setup {
+  indent = {
+    char = {
+      "|", "¦", "┆", "┊"
+    },
+  },
+  scope = { enabled = false },
+}
