@@ -1,0 +1,18 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+	name = Tom11w
+	email = tom11w.tw@gmail.com
+	signingkey = ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCqWGTqOS8HIMHmTJSEmo9gLQZAJbh+c9jIOqlPo+SrB9f0McoQK+qI25OrygSF2DOYL3WSeQpKO3cEawRYgeK4GW+zZsCCxaBJ0Q7xzLYdtVmVAhIEUoESXGORSsQR009E4al0eV7gsanmAke/ABZHbm3rVdjOK5A1KzWtu21ZRIDBwsRhVtrBOGy0e9qDVDCg0iT2ohASN97QlYnxWPzYxSj9F+QAccxvMJ2RjqHaqtFiiUpQdMDNycZfUobNvNWk0z1ivXnUE+iXD8EKyjO4TcdnDhqZFlPiMVSBrdaBy4c61BXexHkIZ+CDvq9jlYA7ImYVoWYj0H0cHceYvAl1 tom11w@Allthenticate
+[init]
+	defaultBranch = main
+[gpg "ssh"]
+	allowedSignersFile = ~/.config/git/allowed_signers
+	defaultKeyCommand = ssh-add -L
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
