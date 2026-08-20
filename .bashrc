@@ -1,7 +1,3 @@
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
-
-export PATH="$PATH:$HOME/.rvm/bin"
-. "$HOME/.cargo/env"
-export SSH_AUTH_SOCK="/var/run/allthenticate-ssh.sock"
+# Interactive bash. Bash has no ZDOTDIR equivalent, so this must live in $HOME.
+# Everything portable is in ~/.config/shell/common, shared with zsh.
+[ -f "$HOME/.config/shell/common" ] && . "$HOME/.config/shell/common"

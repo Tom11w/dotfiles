@@ -1,0 +1,77 @@
+# Portable shell config, sourced by BOTH zsh and bash. POSIX sh only:
+
+_os=$(uname -s)
+
+export EDITOR=nvim
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git --exclude .cache'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+alias vi='nvim'
+alias vimdiff='nvim -d'
+alias weather='curl wttr.in/canberra'
+alias ftxt='grep --recursive --line-number -i'
+alias fman='compgen -c | fzf | xargs man'
+alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
+
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# Allthenticate SSH agent
+if [ -z "$SSH_CONNECTION" ] || [ -z "$SSH_AUTH_SOCK" ]; then
+    [ -S /var/run/allthenticate-ssh.sock ] &&
+        export SSH_AUTH_SOCK=/var/run/allthenticate-ssh.sock
+fi
+
+# Only on the machine hosting the GitLab server
+[ -d /srv/gitlab ] && export GITLAB_HOME=/srv/gitlab
+
+# Homebrew's prefix differs per platform: Apple Silicon, Intel mac, linuxbrew.
+# Probe rather than assume — .zshrc reads BREW_PREFIX too.
+for b in /opt/homebrew /usr/local /home/linuxbrew/.linuxbrew; do
+    [ -x "$b/bin/brew" ] && { BREW_PREFIX=$b; export BREW_PREFIX; break; }
+done
+# macOS gets brew via path_helper; Linux needs shellenv run explicitly
+[ "$_os" = Linux ] && [ -n "$BREW_PREFIX" ] && eval "$("$BREW_PREFIX/bin/brew" shellenv)"
+
+if [ "$_os" = Darwin ] && [ -n "$BREW_PREFIX" ]; then
+    # This mac carries a second, Intel brew in /usr/local for universal builds,
+    # and path_helper lists /usr/local/bin FIRST — so pin the native one ahead.
+    # zsh re-does this in .zshrc: .zshenv runs before path_helper, bash's doesn't.
+    PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
+
+    # clang-format/clang-tidy for the pre-commit hook; keg-only, beats Apple's clang
+    [ -d "$BREW_PREFIX/opt/llvm/bin" ] && PATH="$BREW_PREFIX/opt/llvm/bin:$PATH"
+
+    # Intel brew stays reachable on purpose, never by accident
+    [ -x /usr/local/bin/brew ] && [ "$BREW_PREFIX" != /usr/local ] &&
+        alias ibrew='arch -x86_64 /usr/local/bin/brew'
+fi
+
+# pnpm's home is ~/Library on mac, the XDG data dir on Linux/WSL/termux
+for d in "$HOME/Library/pnpm" "${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"; do
+    [ -d "$d" ] && { export PNPM_HOME=$d; break; }
+done
+
+# These should beat system versions, so they go in front
+for d in "$HOME/.jenv/bin" "$PNPM_HOME" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
+    [ -d "$d" ] || continue
+    case ":$PATH:" in *":$d:"*) ;; *) PATH="$d:$PATH" ;; esac
+done
+
+# Convenience tools, and rvm which asks to be last
+for d in "$HOME/.docker/bin" "$HOME/.lmstudio/bin" "$HOME/.rvm/bin"; do
+    [ -d "$d" ] || continue
+    case ":$PATH:" in *":$d:"*) ;; *) PATH="$PATH:$d" ;; esac
+done
+export PATH
+
+# Locate jenv directly instead of via PATH: zsh reads .zshenv BEFORE
+# /etc/zprofile runs path_helper, so brew isn't on PATH yet at this point.
+# jenv also prepends its shims unguarded, so skip when they're already there.
+case ":$PATH:" in
+    *":$HOME/.jenv/shims:"*) ;;
+    *) for j in "$HOME/.jenv/bin/jenv" "$BREW_PREFIX/bin/jenv"; do
+           [ -x "$j" ] && { eval "$("$j" init -)"; break; }
+       done ;;
+esac
+
+unset _os b d j
