@@ -1,10 +1,17 @@
-## How I set up this repo
+## Install command.
+```
+curl -fsSL https://raw.githubusercontent.com/Tom11w/dotfiles/master/.github/setup.sh | sh
+```
+
+## How to create a repo like this
 ```
 git init --bare $HOME/dotfiles
     alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
     config config status.showUntrackedFiles no
 ```
 
+
+## How to then clone it.
 ```
 git clone --separate-git-dir=$HOME/dotfiles/path/to/repo $HOME/myconf-tmp
     cp ~/myconf-tmp/.gitmodules ~  # If you use Git submodules
