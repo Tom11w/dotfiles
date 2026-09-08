@@ -2,7 +2,13 @@ set nu
 set relativenumber
 set colorcolumn=80
 set cul
+
+"Brew prefixes; missing rtp dirs are ignored, so all three are safe to list.
+"Linux distro fzf ships into vimfiles/, already in rtp.
 set rtp+=/usr/local/opt/fzf
+set rtp+=/opt/homebrew/opt/fzf
+set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
+set viminfofile=~/.config/vim/viminfo
 
 
 set listchars=eol:⏎,tab:\|\-▶,space:·,trail:~,extends:>,precedes:<,nbsp:␣
