@@ -59,6 +59,14 @@ if [[ $OSTYPE == darwin* && -n $BREW_PREFIX ]]; then
     [[ -s $BREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm ]] && source $BREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm
 fi
 
+# macOS path_helper (/etc/zprofile) rebuilds PATH *after* .zshenv has run,
+# demoting these behind brew's copies. Re-assert them here, where nothing else
+# reorders. `typeset -U path` moves an existing entry rather than duplicating.
+# Keep this list in sync with the prepend loop in ~/.config/shell/common.
+for d in "$HOME/.jenv/bin" "$PNPM_HOME" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
+    [[ -d $d ]] && path=("$d" $path)
+done
+
 # gcloud completion (PATH is handled portably in .shell_common)
 [[ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]] && source "$HOME/google-cloud-sdk/completion.zsh.inc"
 
