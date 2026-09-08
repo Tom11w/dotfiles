@@ -82,6 +82,7 @@ vim.keymap.set("v", "<space>x", ":lua<CR>")
 vim.keymap.set("n", "<leader>rr", ":!cargo run <CR>", { desc = "Cargo run" })
 vim.keymap.set("n", "<leader>rp", ":!python3 main.py<CR>", { desc = "Python run main.py" })
 
+vim.keymap.set("v", "<space>p", ":w !ipython --no-confirm-exit --no-tip --no-banner <CR>")
 -- require('dapui').setup()
 -- require('dap-python').setup('~/Envs/vimpy3env/bin/python')
 --
