@@ -35,12 +35,9 @@ plugins=(
     python
 )
 
-source $ZSH/oh-my-zsh.sh
-
-source $ZSH/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
-# To customize prompt, run `p10k configure` or edit $ZDOTDIR/p10k.zsh.
-[[ ! -f $ZDOTDIR/p10k.zsh ]] || source $ZDOTDIR/p10k.zsh
-
+# PATH is pinned BEFORE oh-my-zsh: its python plugin auto-activates a .venv at
+# startup and saves PATH for deactivate. Saved before these pins, leaving the
+# venv restores path_helper's order (Intel brew first) — seen 2026-09-24.
 typeset -U path  # keep PATH deduped when this file is re-sourced
 
 if [[ $OSTYPE == darwin* && -n $BREW_PREFIX ]]; then
@@ -66,6 +63,13 @@ fi
 for d in "$HOME/.jenv/bin" "$PNPM_HOME" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
     [[ -d $d ]] && path=("$d" $path)
 done
+
+source $ZSH/oh-my-zsh.sh
+
+source $ZSH/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
+# To customize prompt, run `p10k configure` or edit $ZDOTDIR/p10k.zsh.
+[[ ! -f $ZDOTDIR/p10k.zsh ]] || source $ZDOTDIR/p10k.zsh
+
 
 # gcloud completion (PATH is handled portably in .shell_common)
 [[ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]] && source "$HOME/google-cloud-sdk/completion.zsh.inc"
