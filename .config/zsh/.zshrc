@@ -45,6 +45,8 @@ if [[ $OSTYPE == darwin* && -n $BREW_PREFIX ]]; then
     # path_helper lists /usr/local/bin FIRST, so without this the Intel brew
     # wins a bare `brew`. Pin the native one ahead of it.
     path=("$BREW_PREFIX/bin" "$BREW_PREFIX/sbin" $path)
+    # keg-only llvm must beat Apple's clang; path_helper demoted it too
+    [[ -d $BREW_PREFIX/opt/llvm/bin ]] && path=("$BREW_PREFIX/opt/llvm/bin" $path)
 
     # brew's repository dir is NOT its prefix on Intel, so ask brew itself
     cnf="$($BREW_PREFIX/bin/brew --repository)/Library/Homebrew/command-not-found/handler.sh"
