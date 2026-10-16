@@ -44,6 +44,8 @@ if [ "$_os" = Darwin ] && [ -n "$BREW_PREFIX" ]; then
 
     # clang-format/clang-tidy for the pre-commit hook; keg-only, beats Apple's clang
     [ -d "$BREW_PREFIX/opt/llvm/bin" ] && PATH="$BREW_PREFIX/opt/llvm/bin:$PATH"
+    # keg-only ruby must beat Apple's 2.6 in /usr/bin, which macOS owns and gem can't update
+    [ -d "$BREW_PREFIX/opt/ruby/bin" ] && PATH="$BREW_PREFIX/opt/ruby/bin:$PATH"
 
     # Intel brew stays reachable on purpose, never by accident
     [ -x /usr/local/bin/brew ] && [ "$BREW_PREFIX" != /usr/local ] &&

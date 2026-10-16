@@ -47,6 +47,8 @@ if [[ $OSTYPE == darwin* && -n $BREW_PREFIX ]]; then
     path=("$BREW_PREFIX/bin" "$BREW_PREFIX/sbin" $path)
     # keg-only llvm must beat Apple's clang; path_helper demoted it too
     [[ -d $BREW_PREFIX/opt/llvm/bin ]] && path=("$BREW_PREFIX/opt/llvm/bin" $path)
+    # keg-only ruby must beat Apple's 2.6 in /usr/bin, which macOS owns and gem can't update
+    [[ -d $BREW_PREFIX/opt/ruby/bin ]] && path=("$BREW_PREFIX/opt/ruby/bin" $path)
 
     # brew's repository dir is NOT its prefix on Intel, so ask brew itself
     cnf="$($BREW_PREFIX/bin/brew --repository)/Library/Homebrew/command-not-found/handler.sh"
