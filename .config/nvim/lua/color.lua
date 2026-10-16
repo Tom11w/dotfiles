@@ -30,6 +30,10 @@ require('colorizer').setup({
     css = true,
     always_update = true,
     xterm = true, -- Enable xterm 256-color codes (#xNN, \e[38;5;NNNm)
+    hooks = {
+      -- minified files have multi-MB lines; scanning them for colors hangs nvim
+      should_highlight_line = function(line) return #line <= 1000 end,
+    },
   }
 })
 vim.cmd.colorscheme "catppuccin-nvim"

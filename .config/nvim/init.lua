@@ -75,6 +75,9 @@ require('color')
 -- Set Python paths
 vim.g.python3_host_prog = '~/Envs/vimpy3env/bin/python'
 -- vim.g.python_host_prog = '/Users/tom11w/Envs/vimpy2env/bin/python'
+-- no plugins here use perl or ruby; disabling stops :checkhealth warning about their hosts
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
 vim.keymap.set("n", "<space>x", ":.lua<CR>")

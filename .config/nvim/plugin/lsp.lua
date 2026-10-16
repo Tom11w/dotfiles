@@ -32,6 +32,24 @@ vim.lsp.config('*', { capabilities = capabilities })
 vim.lsp.config('clangd', {
   cmd = { 'clangd', '--clang-tidy', '--background-index', '--header-insertion=never' },
 })
+-- lspconfig's defaults list filetypes nvim never detects; :checkhealth warns on each
+local unknown_fts = {
+  'c.doxygen', 'cpp.doxygen', 'markdown.mdx', 'aspnetcorerazor', 'astro-markdown',
+  'django-html', 'edge', 'ejs', 'erb', 'gohtml', 'gohtmltmpl', 'hbs', 'html-eex',
+  'jade', 'leaf', 'mdx', 'njk', 'nunjucks', 'slim', 'postcss', 'sugarss', 'reason',
+}
+for _, name in ipairs({ 'clangd', 'marksman', 'tailwindcss' }) do
+  vim.lsp.config(name, {
+    filetypes = vim.tbl_filter(function(ft)
+      return not vim.list_contains(unknown_fts, ft)
+    end, vim.lsp.config[name].filetypes),
+  })
+end
+-- also treat Eclipse projects (.project) as roots; otherwise jdtls only reports syntax errors
+local jdtls_markers = vim.lsp.config.jdtls.root_markers
+vim.lsp.config('jdtls', {
+  root_markers = { jdtls_markers[1], vim.list_extend({ '.project' }, jdtls_markers[2]) },
+})
 vim.lsp.enable('clangd')
 vim.lsp.enable('lua_ls')
 vim.lsp.enable('ruff')
