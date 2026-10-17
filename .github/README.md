@@ -23,7 +23,8 @@ https://news.ycombinator.com/item?id=11071754
 
 ## Moving an existing machine onto the `.config` layout
 
-Found doing this on the 2019 mac, 2026-09-08. Three things bite, in this order.
+Found doing this on the 2019 mac, 2026-09-08 (sections 1–3), then the move of tools' own
+folders out of `$HOME`, 2026-10-17 (section 4). Do them in this order.
 
 ### 1. A few untracked files block the pull — and one of them is your SSH agent
 
@@ -83,3 +84,61 @@ file ~/.local/share/nvim/site/pack/core/opt/telescope-fzf-native.nvim/build/libf
 Check the architecture — a copy built on another machine is the wrong one and fails just
 as opaquely. An old `~/.local/share/nvim/lazy/` tree may still hold a stale `libfzf.so`;
 that is dead weight, not the file nvim loads.
+
+### 4. Tools' own folders: move them, then the config follows
+
+`shell/common` sets the XDG base directories (`~/.config`, `~/.local/share`,
+`~/.local/state`, `~/.cache`) and points each tool at its XDG folder **only once that folder
+exists**. Pulling the config therefore changes nothing on its own: a tool switches when its
+folder is moved. Move them with the tools closed, then open new shells (running shells keep
+the old paths; oh-my-zsh loads its functions lazily from its folder):
+
+```sh
+sh ~/.github/xdg-move.sh
+```
+
+It prints each folder it moves and skips anything already moved or not installed, so it is
+safe to re-run. What moves where:
+
+| From `$HOME` | To | Read through |
+|---|---|---|
+| `.cargo`, `.rustup` | `~/.local/share/cargo`, `…/rustup` | `CARGO_HOME`, `RUSTUP_HOME` (cargo's `bin` goes on PATH directly; the old `~/.cargo/env` names the old path) |
+| `.nvm` | `~/.local/share/nvm` | `NVM_DIR` |
+| `.oh-my-zsh` | `~/.local/share/oh-my-zsh` | `ZSH` |
+| `.jenv` | `~/.local/share/jenv` | `JENV_ROOT` |
+| `.gradle` | `~/.local/share/gradle` | `GRADLE_USER_HOME` in a shell; Android Studio does not read it, so also set Settings › Build, Execution, Deployment › Build Tools › Gradle › *Gradle user home* to the same folder |
+| `.npm` (cache) | `~/.cache/npm` | `NPM_CONFIG_CACHE` |
+| `.gem` | `~/.local/share/gem`, `~/.cache/gem` | RubyGems' own default once `~/.gem` is gone |
+| `.dotnet`, `.templateengine` | `~/.local/share/dotnet/` | `DOTNET_CLI_HOME` (dotnet keeps both inside it) |
+| `.nuget/packages` | `~/.cache/NuGetPackages` | `NUGET_PACKAGES` |
+| `.ansible` | `~/.local/share/ansible` | `ANSIBLE_HOME` |
+| `.boto` | `~/.config/gcloud/boto` | `BOTO_CONFIG` |
+| `.ipython`, `.jupyter`, `.matplotlib` | `~/.config/…` | `IPYTHONDIR`, `JUPYTER_CONFIG_DIR`, `MPLCONFIGDIR` |
+| `.terminfo` | `~/.local/share/terminfo` | `TERMINFO_DIRS` (keeps a terminal's own `TERMINFO`) |
+| `.wget-hsts` | `~/.local/share/wget-hsts` | `~/.config/wgetrc`, via `WGETRC` |
+| `.bash_history` | `~/.local/state/bash/history` | `HISTFILE` (zsh's is set in `zsh/.zshrc`) |
+| `.python_history` | `~/.local/state/python_history` | `PYTHON_HISTORY` (Python 3.13+) |
+| `.homebrew/trust.json` | `~/.config/homebrew/trust.json` | brew's own default once `XDG_CONFIG_HOME` is set; if brew made a new one first, the script skips it: re-add the old entries with `brew trust --formula …` / `--cask …` / `--tap …` |
+
+Then check in a new shell: `cargo --version`, `rustup show home`, `omz version`,
+`jenv version`, `gem env user_gemhome`, `npm config get cache`.
+
+If oh-my-zsh's folder was missing its theme (`no such file or directory:
+…/custom/themes/powerlevel10k/powerlevel10k.zsh-theme`), clone it into the moved folder:
+
+```sh
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH/custom/themes/powerlevel10k"
+```
+
+**Claude Code** moves separately, because it must be closed while its folder moves: quit every
+session, then from a plain terminal run
+
+```sh
+sh ~/.github/claude-move.sh
+```
+
+It moves `~/.claude` and `~/.claude.json` into `~/.config/claude` and rewrites the absolute
+paths Claude Code stored in `settings.json` and its plugin lists. `shell/common` then sets
+`CLAUDE_CONFIG_DIR`. In a new shell start `claude` and run `/login` once: the macOS Keychain
+keeps one login per config folder. Scripts or hooks that read `~/.claude/…` directly should use
+`${CLAUDE_CONFIG_DIR:-$HOME/.claude}`.

@@ -5,7 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="${ZSH:-$HOME/.oh-my-zsh}"   # common sets it once moved to the XDG data dir
 
 # ---- everything below must be set before oh-my-zsh is sourced ----
 
@@ -55,7 +55,7 @@ if [[ $OSTYPE == darwin* && -n $BREW_PREFIX ]]; then
     [[ -f $cnf ]] && source $cnf
     unset cnf
 
-    export NVM_DIR="$HOME/.nvm"
+    export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"   # common sets it once moved
     [[ -s $BREW_PREFIX/opt/nvm/nvm.sh ]] && source $BREW_PREFIX/opt/nvm/nvm.sh
     [[ -s $BREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm ]] && source $BREW_PREFIX/opt/nvm/etc/bash_completion.d/nvm
 fi
@@ -64,7 +64,7 @@ fi
 # demoting these behind brew's copies. Re-assert them here, where nothing else
 # reorders. `typeset -U path` moves an existing entry rather than duplicating.
 # Keep this list in sync with the prepend loop in ~/.config/shell/common.
-for d in "$HOME/.jenv/bin" "$PNPM_HOME" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
+for d in "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNPM_HOME" "${PNPM_HOME:+$PNPM_HOME/bin}" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
     [[ -d $d ]] && path=("$d" $path)
 done
 

@@ -2,6 +2,45 @@
 
 _os=$(uname -s)
 
+# XDG base directories (the spec's defaults). Tools that read them keep config, data,
+# state and cache here instead of their own folders in $HOME; set explicitly because on
+# macOS many tools only honour them when they are set.
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+: "${XDG_DATA_HOME:=$HOME/.local/share}"
+: "${XDG_STATE_HOME:=$HOME/.local/state}"
+: "${XDG_CACHE_HOME:=$HOME/.cache}"
+export XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME XDG_CACHE_HOME
+
+# Tools' own homes under the XDG dirs. Each switches once its folder has been moved
+# there, so a machine whose folders are still in $HOME keeps working unchanged.
+[ -d "$XDG_DATA_HOME/cargo" ]        && export CARGO_HOME="$XDG_DATA_HOME/cargo"
+[ -d "$XDG_DATA_HOME/rustup" ]       && export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+[ -d "$XDG_DATA_HOME/nvm" ]          && export NVM_DIR="$XDG_DATA_HOME/nvm"
+[ -d "$XDG_DATA_HOME/oh-my-zsh" ]    && export ZSH="$XDG_DATA_HOME/oh-my-zsh"
+[ -d "$XDG_CONFIG_HOME/ipython" ]    && export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+[ -d "$XDG_CONFIG_HOME/jupyter" ]    && export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+[ -d "$XDG_CONFIG_HOME/matplotlib" ] && export MPLCONFIGDIR="$XDG_CONFIG_HOME/matplotlib"
+[ -d "$XDG_DATA_HOME/ansible" ]      && export ANSIBLE_HOME="$XDG_DATA_HOME/ansible"
+[ -d "$XDG_DATA_HOME/dotnet" ]       && export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
+[ -d "$XDG_CACHE_HOME/NuGetPackages" ] && export NUGET_PACKAGES="$XDG_CACHE_HOME/NuGetPackages"
+[ -f "$XDG_CONFIG_HOME/gcloud/boto" ] && export BOTO_CONFIG="$XDG_CONFIG_HOME/gcloud/boto"
+[ -d "$XDG_DATA_HOME/jenv" ]         && export JENV_ROOT="$XDG_DATA_HOME/jenv"
+# Android Studio is pointed here in its own settings too (Build Tools > Gradle), so the IDE
+# and a terminal ./gradlew share one cache
+[ -d "$XDG_DATA_HOME/gradle" ]       && export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+[ -f "$XDG_CONFIG_HOME/wgetrc" ]     && export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+# Claude Code keeps .claude.json in here too, and its login under a Keychain entry per folder
+[ -d "$XDG_CONFIG_HOME/claude" ]     && export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
+# an empty entry at the end keeps the system's own terminfo dirs (and a terminal's TERMINFO)
+[ -d "$XDG_DATA_HOME/terminfo" ]     && export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:"
+# bash's history (zsh sets its own in .zshrc)
+if [ -n "${BASH_VERSION:-}" ] && [ ! -e "$HOME/.bash_history" ]; then
+    HISTFILE="$XDG_STATE_HOME/bash/history"
+    [ -d "${HISTFILE%/*}" ] || mkdir -p "${HISTFILE%/*}"
+fi
+[ -d "$XDG_CACHE_HOME/npm" ]        && export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
+[ -e "$XDG_STATE_HOME/python_history" ] && export PYTHON_HISTORY="$XDG_STATE_HOME/python_history"  # 3.13+
+
 export EDITOR=nvim
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git --exclude .cache'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -13,11 +52,16 @@ alias ftxt='grep --recursive --line-number -i'
 alias fman='compgen -c | fzf | xargs man'
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 
-[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+# cargo's bin, where rustup's ~/.cargo/env used to put it (that file names the old path)
+_cargo_bin="${CARGO_HOME:-$HOME/.cargo}/bin"
+[ -d "$_cargo_bin" ] && case ":$PATH:" in *":$_cargo_bin:"*) ;; *) PATH="$_cargo_bin:$PATH" ;; esac
 
 # MonoGame's shader compiler runs under wine. Guarded on the prefix so this
 # stays inert on machines that do not have it.
 [ -d "$HOME/.winemonogame" ] && export MGFXC_WINE_PATH="$HOME/.winemonogame"
+
+# MTPLX's command line reads its model folder from here; its app keeps its own setting
+[ -d "$HOME/AI/mtplx" ] && export MTPLX_MODEL_DIR="$HOME/AI/mtplx"
 
 # Allthenticate SSH agent
 if [ -z "$SSH_CONNECTION" ] || [ -z "$SSH_AUTH_SOCK" ]; then
@@ -58,13 +102,14 @@ for d in "$HOME/Library/pnpm" "${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"; do
 done
 
 # These should beat system versions, so they go in front
-for d in "$HOME/.jenv/bin" "$PNPM_HOME" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
+# (pnpm 11+ keeps its commands in $PNPM_HOME/bin; older versions in $PNPM_HOME itself)
+for d in "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNPM_HOME" "${PNPM_HOME:+$PNPM_HOME/bin}" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
     [ -d "$d" ] || continue
     case ":$PATH:" in *":$d:"*) ;; *) PATH="$d:$PATH" ;; esac
 done
 
 # Convenience tools, and rvm which asks to be last
-for d in "$HOME/.docker/bin" "$HOME/.lmstudio/bin" "$HOME/.rvm/bin"; do
+for d in "$HOME/.docker/bin" "$XDG_DATA_HOME/lmstudio/bin" "$HOME/.lmstudio/bin" "$HOME/.mtplx/bin" "${DOTNET_CLI_HOME:+$DOTNET_CLI_HOME/.dotnet/tools}" "$HOME/.rvm/bin"; do
     [ -d "$d" ] || continue
     case ":$PATH:" in *":$d:"*) ;; *) PATH="$PATH:$d" ;; esac
 done
@@ -74,10 +119,10 @@ export PATH
 # /etc/zprofile runs path_helper, so brew isn't on PATH yet at this point.
 # jenv also prepends its shims unguarded, so skip when they're already there.
 case ":$PATH:" in
-    *":$HOME/.jenv/shims:"*) ;;
-    *) for j in "$HOME/.jenv/bin/jenv" "$BREW_PREFIX/bin/jenv"; do
+    *":${JENV_ROOT:-$HOME/.jenv}/shims:"*) ;;
+    *) for j in "${JENV_ROOT:-$HOME/.jenv}/bin/jenv" "$BREW_PREFIX/bin/jenv"; do
            [ -x "$j" ] && { eval "$("$j" init -)"; break; }
        done ;;
 esac
 
-unset _os b d j
+unset _os _cargo_bin b d j
