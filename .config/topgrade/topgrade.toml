@@ -1,0 +1,27 @@
+# topgrade: updates the package managers and tools it finds.
+# All options: `topgrade --config-reference`. Machine-specific settings go in
+# ~/.config/topgrade.d/*.toml (not tracked), which topgrade includes automatically.
+
+[misc]
+# system: OS updates are done separately.
+# ruby_gems: runs `sudo gem update --system`; the RubyGems command below does it without sudo.
+disable = ["system", "ruby_gems"]
+cleanup = true
+notify_end = "on_failure"
+
+[brew]
+greedy_cask = true
+autoremove = true
+
+[git]
+# ~/src/<host>/<owner>/<repo>
+repos = ["~/src/*/*/*"]
+# No `arguments`: git already refuses to merge a diverged branch when pull.rebase and
+# pull.ff are unset, and topgrade also passes arguments to its fallback `git fetch`.
+max_concurrency = 8
+# a repo on a working branch still gets its default branch fetched
+fallback_to_fetch_default = true
+
+[commands]
+# Homebrew's Ruby only; a system Ruby is updated by the system package manager.
+"RubyGems" = "case $(command -v gem) in */homebrew/*|*/linuxbrew/*) gem update --system ;; *) echo 'gem is not brew-managed: updated by the system package manager' ;; esac"
