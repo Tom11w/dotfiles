@@ -1,0 +1,44 @@
+# NOTE: this yazi (26.8.15) wants `url =` for glob rules. Several plugin READMEs
+# still show `name =`, which fails to parse and takes the whole config with it.
+# Rules match in order, so specific ones go above the text/* catch-all.
+# Mime strings are yazi's own, NOT what `file -bL --mime-type` prints: sqlite is
+# application/sqlite3 to yazi, application/vnd.sqlite3 to file(1).
+
+[mgr]
+show_hidden = true          # so .git/ can be hovered for preview-git
+
+[plugin]
+prepend_preloaders = [
+    # LibreOffice -> PDF -> image. yazi normalises mime and drops the "vnd.",
+    # so these match despite file(1) reporting application/vnd.openxml...
+    { mime = "application/openxmlformats-officedocument.*", run = "office" },
+    { mime = "application/oasis.opendocument.*", run = "office" },
+    { mime = "application/ms-*", run = "office" },
+
+    # 3D models — STL/3MF/STEP etc. via f3d
+    { url = "*.{3mf,obj,pts,ply,stl,step,stp}", run = "f3d-preview" },
+    { url = "*.blend",  run = "blender-preview" },
+    { url = "*.blend1", run = "blender-preview" },
+]
+
+prepend_previewers = [
+    # LibreOffice -> PDF -> image. yazi normalises mime and drops the "vnd.",
+    # so these match despite file(1) reporting application/vnd.openxml...
+    { mime = "application/openxmlformats-officedocument.*", run = "office" },
+    { mime = "application/oasis.opendocument.*", run = "office" },
+    { mime = "application/ms-*", run = "office" },
+
+    # 3D models — STL/3MF/STEP etc. via f3d
+    { url = "*.{3mf,obj,pts,ply,stl,step,stp}", run = "f3d-preview" },
+    { url = "*.blend",  run = "blender-preview" },
+    { url = "*.blend1", run = "blender-preview" },
+
+    # hovering a .git/ dir shows remotes, status and recent log
+    { url = "**/.git/", run = "preview-git" },
+
+    { mime = "application/sqlite3", run = 'faster-piper -- sqlite3 "$1" ".schema --indent"' },
+
+    # Text through bat, so extension-less dotfiles (.zshrc, common) highlight the
+    # way ranger's scope.sh does. Costs a process spawn per preview.
+    { mime = "text/*", run = 'faster-piper -- bat -p --color=always --theme="Catppuccin Mocha" "$1"' },
+]

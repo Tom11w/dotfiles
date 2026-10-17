@@ -1,0 +1,7 @@
+# `l` enters a directory OR opens a file — ranger's behaviour. yazi's default
+# `l` only enters directories; opening is on Enter/o. Files open with the
+# default opener, which is `${EDITOR:-vi}` i.e. nvim.
+[[mgr.prepend_keymap]]
+on   = "l"
+run  = "plugin smart-enter"
+desc = "Enter the child directory, or open the file"
