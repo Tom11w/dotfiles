@@ -115,7 +115,7 @@ safe to re-run. What moves where:
 | `.boto` | `~/.config/gcloud/boto` | `BOTO_CONFIG` |
 | `.ipython`, `.jupyter`, `.matplotlib` | `~/.config/…` | `IPYTHONDIR`, `JUPYTER_CONFIG_DIR`, `MPLCONFIGDIR` |
 | `.terminfo` | `~/.local/share/terminfo` | `TERMINFO_DIRS` (keeps a terminal's own `TERMINFO`) |
-| `.wget-hsts` | `~/.local/share/wget-hsts` | `~/.config/wgetrc`, via `WGETRC` |
+| `.wget-hsts` | `~/.local/share/wget-hsts` | `~/.config/wget/wgetrc`, via `WGETRC` |
 | `.bash_history` | `~/.local/state/bash/history` | `HISTFILE` (zsh's is set in `zsh/.zshrc`) |
 | `.python_history` | `~/.local/state/python_history` | `PYTHON_HISTORY` (Python 3.13+) |
 | `.homebrew/trust.json` | `~/.config/homebrew/trust.json` | brew's own default once `XDG_CONFIG_HOME` is set; if brew made a new one first, the script skips it: re-add the old entries with `brew trust --formula …` / `--cask …` / `--tap …` |
@@ -129,16 +129,3 @@ If oh-my-zsh's folder was missing its theme (`no such file or directory:
 ```sh
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH/custom/themes/powerlevel10k"
 ```
-
-**Claude Code** moves separately, because it must be closed while its folder moves: quit every
-session, then from a plain terminal run
-
-```sh
-sh ~/.github/claude-move.sh
-```
-
-It moves `~/.claude` and `~/.claude.json` into `~/.config/claude` and rewrites the absolute
-paths Claude Code stored in `settings.json` and its plugin lists. `shell/common` then sets
-`CLAUDE_CONFIG_DIR`. In a new shell start `claude` and run `/login` once: the macOS Keychain
-keeps one login per config folder. Scripts or hooks that read `~/.claude/…` directly should use
-`${CLAUDE_CONFIG_DIR:-$HOME/.claude}`.

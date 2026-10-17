@@ -28,7 +28,7 @@ export XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME XDG_CACHE_HOME
 # Android Studio is pointed here in its own settings too (Build Tools > Gradle), so the IDE
 # and a terminal ./gradlew share one cache
 [ -d "$XDG_DATA_HOME/gradle" ]       && export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
-[ -f "$XDG_CONFIG_HOME/wgetrc" ]     && export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+[ -f "$XDG_CONFIG_HOME/wget/wgetrc" ] && export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
 # Claude Code keeps .claude.json in here too, and its login under a Keychain entry per folder
 [ -d "$XDG_CONFIG_HOME/claude" ]     && export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
 # an empty entry at the end keeps the system's own terminfo dirs (and a terminal's TERMINFO)
