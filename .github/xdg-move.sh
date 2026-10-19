@@ -29,8 +29,9 @@ move "$HOME/.oh-my-zsh"      "$XDG_DATA_HOME/oh-my-zsh"
 move "$HOME/.npm"            "$XDG_CACHE_HOME/npm"
 move "$HOME/.gem/ruby"       "$XDG_DATA_HOME/gem/ruby"
 move "$HOME/.gem/specs"      "$XDG_CACHE_HOME/gem/specs"
-[ -d "$HOME/.gem" ] && rmdir "$HOME/.gem" && echo "removed  $HOME/.gem (empty)"
-move "$HOME/.python_history" "$XDG_STATE_HOME/python_history"
+if [ -d "$HOME/.gem" ]; then rmdir "$HOME/.gem" && echo "removed  $HOME/.gem (empty)"; fi
+move "$HOME/.python_history" "$XDG_STATE_HOME/python/history"
+move "$XDG_STATE_HOME/python_history" "$XDG_STATE_HOME/python/history"   # an earlier layout
 move "$HOME/.ipython"        "$XDG_CONFIG_HOME/ipython"
 move "$HOME/.jupyter"        "$XDG_CONFIG_HOME/jupyter"
 move "$HOME/.matplotlib"     "$XDG_CONFIG_HOME/matplotlib"
@@ -46,7 +47,13 @@ move "$HOME/.gradle"         "$XDG_DATA_HOME/gradle"
 move "$HOME/.terminfo"       "$XDG_DATA_HOME/terminfo"
 move "$HOME/.wget-hsts"      "$XDG_DATA_HOME/wget-hsts"
 move "$HOME/.bash_history"   "$XDG_STATE_HOME/bash/history"
+move "$HOME/.lesshst"        "$XDG_STATE_HOME/less/history"
+move "$XDG_STATE_HOME/lesshst" "$XDG_STATE_HOME/less/history"   # less's own XDG default
+move "$HOME/.node_repl_history" "$XDG_STATE_HOME/node/repl_history"
 # brew reads its tap trust list from here as soon as XDG_CONFIG_HOME is set
 move "$HOME/.homebrew/trust.json" "$XDG_CONFIG_HOME/homebrew/trust.json"
 rm -f "$HOME/.homebrew/trust.json.lock"
-[ -d "$HOME/.homebrew" ] && rmdir "$HOME/.homebrew" && echo "removed  $HOME/.homebrew (empty)"
+if [ -d "$HOME/.homebrew" ]; then rmdir "$HOME/.homebrew" && echo "removed  $HOME/.homebrew (empty)"; fi
+
+# history folders the shell config points at; the tools write into them but don't create them
+for d in bash python node less; do mkdir -p "$XDG_STATE_HOME/$d"; done

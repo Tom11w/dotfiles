@@ -36,10 +36,12 @@ export XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME XDG_CACHE_HOME
 # bash's history (zsh sets its own in .zshrc)
 if [ -n "${BASH_VERSION:-}" ] && [ ! -e "$HOME/.bash_history" ]; then
     HISTFILE="$XDG_STATE_HOME/bash/history"
-    [ -d "${HISTFILE%/*}" ] || mkdir -p "${HISTFILE%/*}"
 fi
 [ -d "$XDG_CACHE_HOME/npm" ]        && export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
-[ -e "$XDG_STATE_HOME/python_history" ] && export PYTHON_HISTORY="$XDG_STATE_HOME/python_history"  # 3.13+
+# History, one folder per tool under XDG_STATE_HOME (made by ~/.github/xdg-move.sh)
+export PYTHON_HISTORY="$XDG_STATE_HOME/python/history"   # Python 3.13+
+export NODE_REPL_HISTORY="$XDG_STATE_HOME/node/repl_history"
+export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 
 export EDITOR=nvim
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git --exclude .cache'

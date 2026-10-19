@@ -117,7 +117,9 @@ safe to re-run. What moves where:
 | `.terminfo` | `~/.local/share/terminfo` | `TERMINFO_DIRS` (keeps a terminal's own `TERMINFO`) |
 | `.wget-hsts` | `~/.local/share/wget-hsts` | `~/.config/wget/wgetrc`, via `WGETRC` |
 | `.bash_history` | `~/.local/state/bash/history` | `HISTFILE` (zsh's is set in `zsh/.zshrc`) |
-| `.python_history` | `~/.local/state/python_history` | `PYTHON_HISTORY` (Python 3.13+) |
+| `.python_history` | `~/.local/state/python/history` | `PYTHON_HISTORY` (Python 3.13+) |
+| `.node_repl_history` | `~/.local/state/node/repl_history` | `NODE_REPL_HISTORY` |
+| `.lesshst` | `~/.local/state/less/history` | `LESSHISTFILE` |
 | `.homebrew/trust.json` | `~/.config/homebrew/trust.json` | brew's own default once `XDG_CONFIG_HOME` is set; if brew made a new one first, the script skips it: re-add the old entries with `brew trust --formula …` / `--cask …` / `--tap …` |
 
 Then check in a new shell: `cargo --version`, `rustup show home`, `omz version`,
