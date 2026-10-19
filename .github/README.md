@@ -114,7 +114,6 @@ safe to re-run. What moves where:
 | `.ansible` | `~/.local/share/ansible` | `ANSIBLE_HOME` |
 | `.boto` | `~/.config/gcloud/boto` | `BOTO_CONFIG` |
 | `.ipython`, `.jupyter`, `.matplotlib` | `~/.config/…` | `IPYTHONDIR`, `JUPYTER_CONFIG_DIR`, `MPLCONFIGDIR` |
-| `.terminfo` | `~/.local/share/terminfo` | `TERMINFO_DIRS` (keeps a terminal's own `TERMINFO`) |
 | `.wget-hsts` | `~/.local/share/wget-hsts` | `~/.config/wget/wgetrc`, via `WGETRC` |
 | `.bash_history` | `~/.local/state/bash/history` | `HISTFILE` (zsh's is set in `zsh/.zshrc`) |
 | `.python_history` | `~/.local/state/python/history` | `PYTHON_HISTORY` (Python 3.13+) |

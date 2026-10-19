@@ -44,7 +44,6 @@ move "$HOME/.boto"           "$XDG_CONFIG_HOME/gcloud/boto"
 move "$HOME/.jenv"           "$XDG_DATA_HOME/jenv"
 # then set Android Studio's Gradle user home to the same folder
 move "$HOME/.gradle"         "$XDG_DATA_HOME/gradle"
-move "$HOME/.terminfo"       "$XDG_DATA_HOME/terminfo"
 move "$HOME/.wget-hsts"      "$XDG_DATA_HOME/wget-hsts"
 move "$HOME/.bash_history"   "$XDG_STATE_HOME/bash/history"
 move "$HOME/.lesshst"        "$XDG_STATE_HOME/less/history"
