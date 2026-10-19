@@ -52,7 +52,9 @@ alias vimdiff='nvim -d'
 alias weather='curl wttr.in/canberra'
 alias ftxt='grep --recursive --line-number -i'
 alias fman='compgen -c | fzf | xargs man'
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
+# double quotes: the paths are expanded here, so zsh's git completion gets real paths and can list
+# the repo's files (with a literal $HOME it can only complete subcommands)
+alias config="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME"
 
 # cargo's bin, where rustup's ~/.cargo/env used to put it (that file names the old path)
 _cargo_bin="${CARGO_HOME:-$HOME/.cargo}/bin"
