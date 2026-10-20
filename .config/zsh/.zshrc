@@ -64,7 +64,9 @@ fi
 # demoting these behind brew's copies. Re-assert them here, where nothing else
 # reorders. `typeset -U path` moves an existing entry rather than duplicating.
 # Keep this list in sync with the prepend loop in ~/.config/shell/common.
-for d in "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNPM_HOME" "${PNPM_HOME:+$PNPM_HOME/bin}" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
+# cargo's bin as well: a brew rust (a build dependency of many formulae) puts its own cargo in
+# brew's bin, which path_helper lists first; rustup's must win for development
+for d in "${CARGO_HOME:-$HOME/.cargo}/bin" "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNPM_HOME" "${PNPM_HOME:+$PNPM_HOME/bin}" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
     [[ -d $d ]] && path=("$d" $path)
 done
 
@@ -78,8 +80,26 @@ source $ZSH/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
 # gcloud completion (PATH is handled portably in .shell_common)
 [[ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]] && source "$HOME/google-cloud-sdk/completion.zsh.inc"
 
-# the `config` alias is git, so complete it like git (needs compinit, hence here)
-compdef config=git
+# `config` completes as git, but its work tree is all of $HOME. So for that repo:
+#   - don't list untracked files (it walks ~1M files and hangs)
+#   - list modified files by path, matched anywhere: `config add zshrc` -> zsh/.zshrc
+# These replace two helpers in zsh's _git; other repos keep the originals' behaviour.
+_in_dotfiles() { [[ $GIT_DIR == $HOME/dotfiles ]] }
+
+__git_other_files() {
+    _in_dotfiles && return 1
+    __git_files --others untracked-files 'untracked file' "$@"
+}
+
+__git_modified_files() {
+    if ! _in_dotfiles; then
+        __git_files --modified modified-files 'modified file' "$@"
+        return
+    fi
+    local -a changed expl
+    changed=(${(f)"$(git ls-files --modified -- :/)"})
+    _wanted modified-files expl 'modified file' compadd -M 'l:|=* r:|=*' -f -a changed
+}
 
 # zsh-syntax-highlighting must be sourced last
 if [[ -n $TERMUX_VERSION ]]; then
