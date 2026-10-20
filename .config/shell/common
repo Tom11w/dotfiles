@@ -28,6 +28,10 @@ export XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME XDG_CACHE_HOME
 # Android Studio is pointed here in its own settings too (Build Tools > Gradle), so the IDE
 # and a terminal ./gradlew share one cache
 [ -d "$XDG_DATA_HOME/gradle" ]       && export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+# adb keys, the debug keystore and the emulators (AVDs); Android Studio reads it from the
+# login shell's environment like GRADLE_USER_HOME
+[ -d "$XDG_DATA_HOME/android" ]      && export ANDROID_USER_HOME="$XDG_DATA_HOME/android" \
+                                     && export ANDROID_AVD_HOME="$XDG_DATA_HOME/android/avd"  # emulator -list-avds ignores USER_HOME
 [ -f "$XDG_CONFIG_HOME/wget/wgetrc" ] && export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
 # Claude Code keeps .claude.json in here too, and its login under a Keychain entry per folder
 [ -d "$XDG_CONFIG_HOME/claude" ]     && export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"

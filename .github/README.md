@@ -106,7 +106,8 @@ safe to re-run. What moves where:
 | `.nvm` | `~/.local/share/nvm` | `NVM_DIR` |
 | `.oh-my-zsh` | `~/.local/share/oh-my-zsh` | `ZSH` |
 | `.jenv` | `~/.local/share/jenv` | `JENV_ROOT` |
-| `.gradle` | `~/.local/share/gradle` | `GRADLE_USER_HOME` in a shell; Android Studio does not read it, so also set Settings › Build, Execution, Deployment › Build Tools › Gradle › *Gradle user home* to the same folder |
+| `.gradle` | `~/.local/share/gradle` | `GRADLE_USER_HOME`; Android Studio reads it from the login shell's environment (its *Gradle user home* setting shows it as the default) |
+| `.android` | `~/.local/share/android` | `ANDROID_USER_HOME` and `ANDROID_AVD_HOME`; the script repoints each emulator's `.ini`. adb reads no variable for its folder, so its key and known hosts stay in `~/.android`. Close Android Studio and the emulator first |
 | `.npm` (cache) | `~/.cache/npm` | `NPM_CONFIG_CACHE` |
 | `.gem` | `~/.local/share/gem`, `~/.cache/gem` | RubyGems' own default once `~/.gem` is gone |
 | `.dotnet`, `.templateengine` | `~/.local/share/dotnet/` | `DOTNET_CLI_HOME` (dotnet keeps both inside it) |
