@@ -44,19 +44,6 @@ move "$HOME/.boto"           "$XDG_CONFIG_HOME/gcloud/boto"
 move "$HOME/.jenv"           "$XDG_DATA_HOME/jenv"
 # then set Android Studio's Gradle user home to the same folder
 move "$HOME/.gradle"         "$XDG_DATA_HOME/gradle"
-# with Android Studio and the emulator closed; each emulator's .ini names its AVD by absolute path
-# once moved, ~/.android holds only adb's files (below), so don't treat it as unmoved
-[ -d "$XDG_DATA_HOME/android" ] || move "$HOME/.android" "$XDG_DATA_HOME/android"
-for f in "$XDG_DATA_HOME"/android/avd/*.ini; do
-    if [ -f "$f" ]; then OLD="$HOME/.android/" NEW="$XDG_DATA_HOME/android/" perl -pi -e 's/\Q$ENV{OLD}\E/$ENV{NEW}/g' "$f"; fi
-done
-# adb has no setting for its folder (not ANDROID_USER_HOME, not ANDROID_SDK_HOME): its key and
-# known hosts stay in ~/.android, so devices keep this computer authorized
-for f in adbkey adbkey.pub adb_known_hosts.pb; do
-    if [ -e "$XDG_DATA_HOME/android/$f" ] && [ ! -e "$HOME/.android/$f" ]; then
-        mkdir -p "$HOME/.android" && mv "$XDG_DATA_HOME/android/$f" "$HOME/.android/$f" && echo "moved    adb's $f back to $HOME/.android"
-    fi
-done
 move "$HOME/.wget-hsts"      "$XDG_DATA_HOME/wget-hsts"
 move "$HOME/.bash_history"   "$XDG_STATE_HOME/bash/history"
 move "$HOME/.lesshst"        "$XDG_STATE_HOME/less/history"

@@ -28,10 +28,7 @@ export XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME XDG_CACHE_HOME
 # Android Studio is pointed here in its own settings too (Build Tools > Gradle), so the IDE
 # and a terminal ./gradlew share one cache
 [ -d "$XDG_DATA_HOME/gradle" ]       && export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
-# adb keys, the debug keystore and the emulators (AVDs); Android Studio reads it from the
-# login shell's environment like GRADLE_USER_HOME
-[ -d "$XDG_DATA_HOME/android" ]      && export ANDROID_USER_HOME="$XDG_DATA_HOME/android" \
-                                     && export ANDROID_AVD_HOME="$XDG_DATA_HOME/android/avd"  # emulator -list-avds ignores USER_HOME
+
 [ -f "$XDG_CONFIG_HOME/wget/wgetrc" ] && export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
 # Claude Code keeps .claude.json in here too, and its login under a Keychain entry per folder
 [ -d "$XDG_CONFIG_HOME/claude" ]     && export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
@@ -60,9 +57,20 @@ alias fman='compgen -c | fzf | xargs man'
 # the repo's files (with a literal $HOME it can only complete subcommands)
 alias config="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME"
 
+# Move a folder to the front of PATH, dropping it from further back. A shell started from a
+# shell runs this file again; moving (not skipping) keeps the order the same every time.
+path_front() {
+    [ -d "$1" ] || return 0
+    p=$1 rest=$PATH:
+    while [ -n "$rest" ]; do
+        e=${rest%%:*} rest=${rest#*:}
+        [ "$e" = "$1" ] || p=$p:$e
+    done
+    PATH=$p
+}
+
 # cargo's bin, where rustup's ~/.cargo/env used to put it (that file names the old path)
-_cargo_bin="${CARGO_HOME:-$HOME/.cargo}/bin"
-[ -d "$_cargo_bin" ] && case ":$PATH:" in *":$_cargo_bin:"*) ;; *) PATH="$_cargo_bin:$PATH" ;; esac
+path_front "${CARGO_HOME:-$HOME/.cargo}/bin"
 
 # MonoGame's shader compiler runs under wine. Guarded on the prefix so this
 # stays inert on machines that do not have it.
@@ -92,12 +100,13 @@ if [ "$_os" = Darwin ] && [ -n "$BREW_PREFIX" ]; then
     # This mac carries a second, Intel brew in /usr/local for universal builds,
     # and path_helper lists /usr/local/bin FIRST — so pin the native one ahead.
     # zsh re-does this in .zshrc: .zshenv runs before path_helper, bash's doesn't.
-    PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
+    path_front "$BREW_PREFIX/sbin"
+    path_front "$BREW_PREFIX/bin"
 
     # clang-format/clang-tidy for the pre-commit hook; keg-only, beats Apple's clang
-    [ -d "$BREW_PREFIX/opt/llvm/bin" ] && PATH="$BREW_PREFIX/opt/llvm/bin:$PATH"
+    path_front "$BREW_PREFIX/opt/llvm/bin"
     # keg-only ruby must beat Apple's 2.6 in /usr/bin, which macOS owns and gem can't update
-    [ -d "$BREW_PREFIX/opt/ruby/bin" ] && PATH="$BREW_PREFIX/opt/ruby/bin:$PATH"
+    path_front "$BREW_PREFIX/opt/ruby/bin"
 
     # Intel brew stays reachable on purpose, never by accident
     [ -x /usr/local/bin/brew ] && [ "$BREW_PREFIX" != /usr/local ] &&
@@ -112,8 +121,7 @@ done
 # These should beat system versions, so they go in front
 # (pnpm 11+ keeps its commands in $PNPM_HOME/bin; older versions in $PNPM_HOME itself)
 for d in "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNPM_HOME" "${PNPM_HOME:+$PNPM_HOME/bin}" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
-    [ -d "$d" ] || continue
-    case ":$PATH:" in *":$d:"*) ;; *) PATH="$d:$PATH" ;; esac
+    path_front "$d"
 done
 
 # Convenience tools, and rvm which asks to be last
@@ -127,10 +135,11 @@ export PATH
 # /etc/zprofile runs path_helper, so brew isn't on PATH yet at this point.
 # jenv also prepends its shims unguarded, so skip when they're already there.
 case ":$PATH:" in
-    *":${JENV_ROOT:-$HOME/.jenv}/shims:"*) ;;
+    *":${JENV_ROOT:-$HOME/.jenv}/shims:"*) path_front "${JENV_ROOT:-$HOME/.jenv}/shims" ;;
     *) for j in "${JENV_ROOT:-$HOME/.jenv}/bin/jenv" "$BREW_PREFIX/bin/jenv"; do
            [ -x "$j" ] && { eval "$("$j" init -)"; break; }
        done ;;
 esac
 
-unset _os _cargo_bin b d j
+unset _os b d e j p rest
+unset -f path_front
