@@ -2,16 +2,17 @@ vim.g.mkdp_filetypes = { 'markdown' }
 
 vim.pack.add({ 'https://github.com/iamcco/markdown-preview.nvim' })
 
--- markdown-preview ships a node app that needs building once
-vim.api.nvim_create_autocmd('PackChanged', {
-  group = vim.api.nvim_create_augroup('my.mkdp', {}),
-  callback = function(ev)
-    if ev.data.spec.name == 'markdown-preview.nvim'
-        and (ev.data.kind == 'install' or ev.data.kind == 'update') then
-      vim.system({ 'npm', 'install' }, { cwd = ev.data.path .. '/app' })
+-- install.sh fetches a prebuilt server with node built in
+local app = vim.pack.get({ 'markdown-preview.nvim' }, { info = false })[1].path .. '/app'
+if vim.fn.glob(app .. '/bin/markdown-preview-*') == '' then
+  vim.system({ './install.sh' }, { cwd = app }, function(r)
+    if r.code ~= 0 then
+      vim.schedule(function()
+        vim.notify('markdown-preview: install.sh failed\n' .. r.stderr, vim.log.levels.WARN)
+      end)
     end
-  end,
-})
+  end)
+end
 
 vim.keymap.set('n', '<space>p', '<cmd>MarkdownPreviewToggle<CR>',
-  { noremap = true, silent = true, desc = 'Markdown preview toggle' })
+  { silent = true, desc = 'Markdown preview toggle' })
