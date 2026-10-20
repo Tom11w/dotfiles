@@ -1,0 +1,7 @@
+ipython
+matplotlib
+more-itertools
+numpy
+pytest
+ruff
+ty
