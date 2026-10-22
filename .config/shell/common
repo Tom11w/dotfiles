@@ -69,9 +69,6 @@ path_front() {
     PATH=$p
 }
 
-# cargo's bin, where rustup's ~/.cargo/env used to put it (that file names the old path)
-path_front "${CARGO_HOME:-$HOME/.cargo}/bin"
-
 # MonoGame's shader compiler runs under wine. Guarded on the prefix so this
 # stays inert on machines that do not have it.
 [ -d "$HOME/.winemonogame" ] && export MGFXC_WINE_PATH="$HOME/.winemonogame"
@@ -122,8 +119,9 @@ for d in "$HOME/Library/pnpm" "${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"; do
 done
 
 # These should beat system versions, so they go in front
-# (pnpm 11+ keeps its commands in $PNPM_HOME/bin; older versions in $PNPM_HOME itself)
-for d in "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNPM_HOME" "${PNPM_HOME:+$PNPM_HOME/bin}" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
+# (cargo's bin is where rustup's ~/.cargo/env used to put it, and beats a brew rust's cargo;
+# pnpm 11+ keeps its commands in $PNPM_HOME/bin; older versions in $PNPM_HOME itself)
+for d in "${CARGO_HOME:-$HOME/.cargo}/bin" "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNPM_HOME" "${PNPM_HOME:+$PNPM_HOME/bin}" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
     path_front "$d"
 done
 
