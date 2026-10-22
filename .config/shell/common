@@ -125,8 +125,9 @@ for d in "${CARGO_HOME:-$HOME/.cargo}/bin" "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNP
     path_front "$d"
 done
 
-# Convenience tools, and rvm which asks to be last
-for d in "$HOME/.docker/bin" "$XDG_DATA_HOME/lmstudio/bin" "$HOME/.lmstudio/bin" "$HOME/.mtplx/bin" "${DOTNET_CLI_HOME:+$DOTNET_CLI_HOME/.dotnet/tools}" "$HOME/.rvm/bin"; do
+# Convenience tools, MacPorts (behind brew, so the git, python and others it pulls in as
+# dependencies don't shadow brew's), and rvm which asks to be last
+for d in "$HOME/.docker/bin" /opt/local/bin /opt/local/sbin "$XDG_DATA_HOME/lmstudio/bin" "$HOME/.lmstudio/bin" "$HOME/.mtplx/bin" "${DOTNET_CLI_HOME:+$DOTNET_CLI_HOME/.dotnet/tools}" "$HOME/.rvm/bin"; do
     [ -d "$d" ] || continue
     case ":$PATH:" in *":$d:"*) ;; *) PATH="$PATH:$d" ;; esac
 done
