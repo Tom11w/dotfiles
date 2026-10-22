@@ -15,8 +15,8 @@ hash = "5368a9f95ebeb613d9a2614d594a185c"
 
 [[plugin.deps]]
 use = "AminurAlam/yazi-plugins:preview-git"
-rev = "7d8ead5"
-hash = "d2a9e56c31b3255149f25ab8bbebab79"
+rev = "7f4e7ca"
+hash = "ca181f8168078f5edaa36d9e6c1b7c64"
 
 [[plugin.deps]]
 use = "alberti42/faster-piper"
