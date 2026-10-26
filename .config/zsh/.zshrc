@@ -65,8 +65,9 @@ fi
 # reorders. `typeset -U path` moves an existing entry rather than duplicating.
 # Keep this list in sync with the prepend loop in ~/.config/shell/common.
 # cargo's bin as well: a brew rust (a build dependency of many formulae) puts its own cargo in
-# brew's bin, which path_helper lists first; rustup's must win for development
-for d in "${CARGO_HOME:-$HOME/.cargo}/bin" "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNPM_HOME" "${PNPM_HOME:+$PNPM_HOME/bin}" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
+# brew's bin, which path_helper lists first; rustup's must win for development. MacPorts too,
+# which path_helper would put behind /usr/bin's older git, perl and unzip
+for d in /opt/local/sbin /opt/local/bin "${CARGO_HOME:-$HOME/.cargo}/bin" "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNPM_HOME" "${PNPM_HOME:+$PNPM_HOME/bin}" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
     [[ -d $d ]] && path=("$d" $path)
 done
 

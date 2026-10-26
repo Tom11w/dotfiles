@@ -119,15 +119,15 @@ for d in "$HOME/Library/pnpm" "${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"; do
 done
 
 # These should beat system versions, so they go in front
-# (cargo's bin is where rustup's ~/.cargo/env used to put it, and beats a brew rust's cargo;
-# pnpm 11+ keeps its commands in $PNPM_HOME/bin; older versions in $PNPM_HOME itself)
-for d in "${CARGO_HOME:-$HOME/.cargo}/bin" "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNPM_HOME" "${PNPM_HOME:+$PNPM_HOME/bin}" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
+# (MacPorts, on a Mac that uses it instead of brew; cargo's bin is where rustup's ~/.cargo/env
+# used to put it, and beats a brew rust's cargo; pnpm 11+ keeps its commands in $PNPM_HOME/bin,
+# older versions in $PNPM_HOME itself)
+for d in /opt/local/sbin /opt/local/bin "${CARGO_HOME:-$HOME/.cargo}/bin" "${JENV_ROOT:-$HOME/.jenv}/bin" "$PNPM_HOME" "${PNPM_HOME:+$PNPM_HOME/bin}" "$HOME/google-cloud-sdk/bin" "$HOME/.local/bin"; do
     path_front "$d"
 done
 
-# Convenience tools, MacPorts (behind brew, so the git, python and others it pulls in as
-# dependencies don't shadow brew's), and rvm which asks to be last
-for d in "$HOME/.docker/bin" /opt/local/bin /opt/local/sbin "$XDG_DATA_HOME/lmstudio/bin" "$HOME/.lmstudio/bin" "$HOME/.mtplx/bin" "${DOTNET_CLI_HOME:+$DOTNET_CLI_HOME/.dotnet/tools}" "$HOME/.rvm/bin"; do
+# Convenience tools, and rvm which asks to be last
+for d in "$HOME/.docker/bin" "$XDG_DATA_HOME/lmstudio/bin" "$HOME/.lmstudio/bin" "$HOME/.mtplx/bin" "${DOTNET_CLI_HOME:+$DOTNET_CLI_HOME/.dotnet/tools}" "$HOME/.rvm/bin"; do
     [ -d "$d" ] || continue
     case ":$PATH:" in *":$d:"*) ;; *) PATH="$PATH:$d" ;; esac
 done
