@@ -5,7 +5,7 @@ hash = "cf3f2d8fab12595e6f09a6cca4734bf4"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:piper"
-rev = "9166202"
+rev = "1ef5fe0"
 hash = "d1e0499cae5f3aeb628c267616d4b682"
 
 [[plugin.deps]]
@@ -15,7 +15,7 @@ hash = "5368a9f95ebeb613d9a2614d594a185c"
 
 [[plugin.deps]]
 use = "AminurAlam/yazi-plugins:preview-git"
-rev = "7f4e7ca"
+rev = "acdbca5"
 hash = "ca181f8168078f5edaa36d9e6c1b7c64"
 
 [[plugin.deps]]
@@ -25,7 +25,7 @@ hash = "12b5e342d54db42b5b023faa1a11f28e"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-enter"
-rev = "9166202"
+rev = "1ef5fe0"
 hash = "187cc58ba7ac3befd49c342129e6f1b6"
 
 [[plugin.deps]]
@@ -35,5 +35,5 @@ hash = "e02a788e5b8ae0fb47fd0193dda589cc"
 
 [[flavor.deps]]
 use = "yazi-rs/flavors:catppuccin-mocha"
-rev = "1183892"
-hash = "ce320f877fe709b189433941aba747c4"
+rev = "38c08d8"
+hash = "57d33c9c6107017bf8afc8df186356c5"
