@@ -47,6 +47,9 @@ export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 export EDITOR=nvim
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git --exclude .cache'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# OpenCode's TUI asks the terminal whether it handles grapheme clusters (mode 2027); tmux does not
+# answer, so inside tmux keycap and other multi-codepoint emoji lose their combining marks
+[ -n "${TMUX:-}" ] && export OPENTUI_FORCE_UNICODE=1
 
 alias vi='nvim'
 alias vimdiff='nvim -d'
