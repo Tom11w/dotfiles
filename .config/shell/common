@@ -79,10 +79,14 @@ path_front() {
 # MTPLX's command line reads its model folder from here; its app keeps its own setting
 [ -d "$HOME/AI/mtplx" ] && export MTPLX_MODEL_DIR="$HOME/AI/mtplx"
 
-# Allthenticate SSH agent
+# SSH agent at the keyboard (an ssh session keeps the one forwarded to it): the agent holding the
+# phone's security key where this machine runs one, else Allthenticate's
 if [ -z "$SSH_CONNECTION" ] || [ -z "$SSH_AUTH_SOCK" ]; then
-    [ -S /var/run/allthenticate-ssh.sock ] &&
+    if [ -S "$HOME/.ssh/agent-sk.sock" ]; then
+        export SSH_AUTH_SOCK="$HOME/.ssh/agent-sk.sock"
+    elif [ -S /var/run/allthenticate-ssh.sock ]; then
         export SSH_AUTH_SOCK=/var/run/allthenticate-ssh.sock
+    fi
 fi
 
 # Only on the machine hosting the GitLab server
